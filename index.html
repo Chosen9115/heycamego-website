@@ -3,113 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Carlos Medellin — Systems for AI agents</title>
-  <meta name="description" content="Founder building Coba, Jaqen, OpenSOP, and Village Project. Public notes on what happens when agents actually operate a company." />
-  <link rel="stylesheet" href="style.css" />
+  <title>heycamego</title>
+  <meta name="description" content="Carlos Medellin. We built a sapiens machine. Now we get to find out what it means." />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" />
+  <style>
+    :root { --bg: #f6f4ee; --ink: #1d1b17; --soft: #7a756a; --line: #d9d4c8;
+      --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; --serif: "Newsreader", Georgia, serif; }
+    body { max-width: 1100px; margin: 0 auto; padding: 56px max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px));
+      background: var(--bg); color: var(--ink); font: 13px/1.7 var(--mono); }
+    .logo { font: 9px/1 var(--mono); margin: 0 0 48px; }
+    main { display: grid; grid-template-columns: 1fr 1.7fr; gap: 72px; }
+    @media (max-width: 720px) { main { grid-template-columns: 1fr; gap: 36px; } }
+    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; align-content: start; }
+    li { color: var(--soft); }
+    a { color: var(--ink); text-decoration: none; font-weight: 700; }
+    a:hover, a:focus-visible { text-decoration: underline; }
+    section { font: 19px/1.55 var(--serif); max-width: 34em; min-width: 0; }
+    section p { margin: 0 0 14px; }
+    section p:first-child { font-style: italic; }
+    footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 28px; color: var(--soft); }
+    footer a { font-weight: 400; }
+  </style>
 </head>
 <body>
+  <pre class="logo" role="img" aria-label="heycamego"> █   ██▀ ▀▄▀ ▄▀▀ ▄▀▄ ▄▀▄▀▄ ██▀ ▄▀  ▄▀▄
+ █▀█ █▄▄  █  ▀▄▄ █▀█ █ ▀ █ █▄▄ ▀▄█ ▀▄▀</pre>
+
   <main>
-    <!-- ===== HERO ===== -->
-    <section class="hero section">
-      <div class="grid">
-        <div class="hero__inner">
-          <p class="tag">[ CARLOS MEDELLIN ]</p>
-          <h1 class="hero__headline">I design the systems that let AI agents run real businesses.</h1>
-          <p class="hero__subhead">Founder building Coba, Jaqen, OpenSOP, and Village Project — public notes on what happens when agents actually operate a company.</p>
-          <ul class="hero__links">
-            <li><a href="https://x.com/heycamego" target="_blank" rel="noopener">X / Twitter <span aria-hidden="true">&#8599;</span></a></li>
-            <li><a href="https://www.linkedin.com/in/camego" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">&#8599;</span></a></li>
-          </ul>
-        </div>
-      </div>
+    <ul>
+      <li><a href="https://tryolympus.ai">TryOlympus.ai</a><br />A shared workspace between humans and agents for automated companies.</li>
+      <li><a href="https://coba.ai">coba.ai</a><br />Banking for AI-native organizations.</li>
+      <li><a href="https://opensop.ai">opensop.ai</a><br />Process as infrastructure for agentic workflows.</li>
+      <li>Wanna chat? <a href="https://x.com/heycamego">Send me a DM on X.</a></li>
+    </ul>
+
+    <section>
+      <p>I believe we are living through a major transformation brought by AI. We now have digital intelligence on tap, and we’re still in the first minutes of understanding what this means. This is bigger than data centres, companies, or political views. The entire way society works will be changing.</p>
+      <p>Think about it: Homo sapiens built a “sapiens machine.” We used human intelligence to create digital intelligence, the very thing that made us different from other human species. That is mind-blowing. For the first time, we can build things and organisations that produce intelligent outputs and interact with the world. We get to experiment with what machines can do, rediscover where humans excel, and explore what new forms of organisation might emerge.</p>
+      <p>Nobody knows exactly where this leads, and that is why we should jump in and try things. We should not wait until the future pushes AI into our lives, like it did with computers and the internet. We have the chance to sail into the unknown and discover for ourselves what lies ahead.</p>
     </section>
-
-    <hr class="rule" />
-
-    <!-- ===== WHAT I'M BUILDING ===== -->
-    <section class="building section">
-      <div class="grid">
-        <header class="section__head">
-          <p class="tag">[ WHAT I&rsquo;M BUILDING ]</p>
-        </header>
-
-        <ol class="projects">
-          <li class="project">
-            <p class="tag project__index">[ 01 ]</p>
-            <h2 class="project__name">Coba.ai</h2>
-            <p class="project__desc">Banking and payments infrastructure, where the back office runs on agents instead of headcount.</p>
-            <a class="project__link" href="https://coba.ai" target="_blank" rel="noopener">Visit <span aria-hidden="true">&#8594;</span></a>
-          </li>
-
-          <li class="project">
-            <p class="tag project__index">[ 02 ]</p>
-            <h2 class="project__name">Jaqen</h2>
-            <p class="project__desc">Jaqen shapes what an agent is. Control your agent&rsquo;s behaviour and iterate it constantly for continuous improvement, or spin up ephemeral agents that respond based on their <code>SOUL.md</code>. Jaqen is Identity as Infrastructure.</p>
-            <a class="project__link" href="https://github.com/coba-ai/Jaqen" target="_blank" rel="noopener">GitHub <span aria-hidden="true">&#8594;</span></a>
-          </li>
-
-          <li class="project">
-            <p class="tag project__index">[ 03 ]</p>
-            <h2 class="project__name">OpenSOP</h2>
-            <p class="project__desc">OpenSOP makes agents reliable. Repeatable agentic processes for businesses that need reliability and auditability, never captured by a single proprietary system. Keep your secrets yours, on your premises. OpenSOP is Process as Infrastructure.</p>
-            <a class="project__link" href="https://opensop.ai" target="_blank" rel="noopener">opensop.ai <span aria-hidden="true">&#8594;</span></a>
-          </li>
-
-          <li class="project">
-            <p class="tag project__index">[ 04 ]</p>
-            <h2 class="project__name">Village Project</h2>
-            <p class="project__desc">AI agents for companies. Turning the operating patterns into infrastructure any company can run on.</p>
-            <span class="project__link project__link--muted">In the works</span>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ===== EMAIL CAPTURE ===== -->
-    <section class="capture section">
-      <div class="grid">
-        <div class="capture__inner">
-          <p class="tag">[ FREE GUIDE ]</p>
-          <h2 class="capture__headline">50 Things You Could Be Automating With Your AI Agent</h2>
-          <p class="capture__body">The playbook for turning invisible manual work into agent-run systems: CRM, sales, content, ops, engineering. Free, straight to your inbox.</p>
-
-          <form id="signup-form" class="form" action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="ca015d0f-9b05-4009-bd0e-88356808b6ab" />
-            <input type="hidden" name="subject" value="New signup: 50 Things guide" />
-            <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
-
-            <label for="email" class="visually-hidden">Email address</label>
-            <input
-              id="email"
-              class="form__input"
-              type="email"
-              name="email"
-              placeholder="you@company.com"
-              autocomplete="email"
-              required
-            />
-            <button class="form__button" type="submit">Send me the guide <span aria-hidden="true">&#8594;</span></button>
-          </form>
-
-          <p class="capture__note">No spam. Unsubscribe anytime. Built from what&rsquo;s actually running inside real companies.</p>
-
-          <p id="form-result" class="form__result" role="status" aria-live="polite" hidden></p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <footer class="footer section">
-      <div class="grid">
-        <p class="tag">[ SYSTEMS ONLINE ]</p>
-        <p class="footer__copy">&copy; <span id="year">2026</span> Carlos Medellin</p>
-      </div>
-    </footer>
   </main>
 
-  <script src="script.js"></script>
+  <footer>
+    <a href="https://x.com/heycamego">X @heycamego</a>
+    <a href="https://www.linkedin.com/in/heycamego">LinkedIn /in/heycamego</a>
+    <a href="https://www.instagram.com/heycamego">Instagram @heycamego</a>
+  </footer>
 </body>
 </html>
