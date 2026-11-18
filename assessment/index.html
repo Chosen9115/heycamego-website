@@ -4,155 +4,209 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Free AI assessment · heycamego</title>
-  <meta name="description" content="Three questions about how you use AI. Get rules of thumb right away, then a 30-minute call if you want one." />
+  <meta name="description" content="Three questions about how you use AI. Walk away with fixes for this week and instructions you can hand straight to your AI." />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" />
   <style>
-    :root { --bg: #f6f4ee; --ink: #1d1b17; --soft: #7a756a; --line: #d9d4c8;
+    :root { --bg: #f6f4ee; --ink: #1d1b17; --soft: #7a756a; --line: #d9d4c8; --field: #fff; --danger: #a3322a;
       --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; --serif: "Newsreader", Georgia, serif; }
-    body { max-width: 640px; margin: 0 auto; padding: 56px 16px;
+    body { max-width: 1040px; margin: 0 auto; padding-block: 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
       background: var(--bg); color: var(--ink); font: 13px/1.7 var(--mono); }
     a { color: var(--ink); font-weight: 700; }
-    h1 { font: italic 28px/1.3 var(--serif); margin: 24px 0 8px; }
-    .lede { font: 19px/1.55 var(--serif); margin: 0 0 40px; }
-    fieldset { border: 0; border-top: 1px solid var(--line); margin: 0; padding: 20px 0 28px; }
+    .wrap { display: grid; grid-template-columns: minmax(0, 640px); gap: 64px; }
+    .wrap.split { grid-template-columns: minmax(0, 1fr) 280px; }
+    @media (max-width: 860px) { .wrap.split { grid-template-columns: minmax(0, 1fr); } }
+    h1 { font: italic 32px/1.25 var(--serif); margin: 24px 0 12px; text-wrap: balance; }
+    .lede { font: 19px/1.55 var(--serif); margin: 0 0 40px; max-width: 34em; }
+    fieldset { border: 0; border-top: 1px solid var(--line); margin: 0; padding: 20px 0 28px; min-width: 0; }
     legend { font-weight: 700; padding: 0; margin-bottom: 4px; }
     .hint { color: var(--soft); margin: 0 0 12px; }
     label.opt { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; cursor: pointer; }
     input[type=radio], input[type=checkbox] { accent-color: var(--ink); }
-    input[type=text], input[type=email], textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px;
-      background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 4px; margin: 4px 0 14px; }
-    button, .btn { font: 700 13px var(--mono); background: var(--ink); color: var(--bg); border: 0; border-radius: 4px;
-      padding: 12px 18px; cursor: pointer; text-decoration: none; display: inline-block; }
+    input[type=email] { width: 100%; box-sizing: border-box; font: inherit; padding: 10px;
+      background: var(--field); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; margin: 4px 0 10px; }
+    button { font: 700 13px var(--mono); background: var(--ink); color: var(--bg); border: 0; border-radius: 4px; padding: 12px 18px; cursor: pointer; }
     button:disabled { opacity: .5; cursor: default; }
-    .rules { font: 18px/1.55 var(--serif); padding: 0; list-style: none; display: grid; gap: 14px; margin: 0 0 32px; }
-    .rules li { border-left: 2px solid var(--ink); padding-left: 14px; }
-    .rules small { display: block; margin-top: 6px; font: 12px/1.6 var(--mono); color: var(--soft); }
-    .err { color: #a3322a; }
+    button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); padding: 6px 12px; font-weight: 400; }
+    .err { color: var(--danger); }
+
+    .result { border-top: 1px solid var(--ink); padding: 28px 0 44px; }
+    .result .said { color: var(--soft); margin: 0 0 8px; }
+    .result h2 { font: 28px/1.25 var(--serif); margin: 0 0 14px; text-wrap: balance; }
+    .result .body { font: 19px/1.6 var(--serif); margin: 0 0 16px; max-width: 34em; }
+    .result .seen { color: var(--soft); margin: 0 0 20px; max-width: 60ch; }
+    summary { cursor: pointer; font-weight: 700; }
+    .agent { margin-top: 14px; border: 1px solid var(--line); border-radius: 4px; background: var(--field); }
+    .agent-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--line); color: var(--soft); }
+    .agent pre { margin: 0; padding: 14px; white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.65 var(--mono); }
+
+    aside { align-self: start; position: sticky; top: max(24px, env(safe-area-inset-top, 0px)); border-top: 1px solid var(--ink); padding-top: 20px; }
+    aside h2 { font: italic 24px/1.3 var(--serif); margin: 0 0 8px; }
+    aside p { color: var(--soft); margin: 0 0 14px; }
+    @media (max-width: 860px) { aside { position: static; } }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
     [hidden] { display: none !important; }
   </style>
 </head>
 <body>
-  <a href="/">← heycamego</a>
-  <h1>Free AI assessment</h1>
-  <p class="lede">Answer three questions and get a few rules of thumb you can use today. If you want more, we book a 30-minute call. You walk me through your setup, and we go over quick fixes for what you flagged.</p>
+  <a href="/">← Back</a>
+  <div class="wrap" id="wrap">
+    <div>
+      <h1>Free AI assessment</h1>
+      <p class="lede">Three questions. Two minutes. You'll leave with a few things you can fix this week, plus instructions you can hand straight to ChatGPT, Claude or whatever agent you already use.</p>
 
-  <form id="f">
-    <input type="hidden" name="access_key" value="WEB3FORMS_ACCESS_KEY" />
-    <input type="hidden" name="subject" value="heycamego assessment" />
-    <input type="checkbox" name="botcheck" hidden />
+      <form id="f">
+        <fieldset>
+          <legend>1. Where are you?</legend>
+          <label class="opt"><input type="radio" name="where" value="Solo" required /> Just me: founder, freelancer or operator</label>
+          <label class="opt"><input type="radio" name="where" value="Small team" /> Small team (2–20 people)</label>
+          <label class="opt"><input type="radio" name="where" value="Company" /> Company (20+ people)</label>
+        </fieldset>
 
-    <fieldset>
-      <legend>1. Where are you?</legend>
-      <label class="opt"><input type="radio" name="where" value="Solo" required /> Just me: founder, freelancer or operator</label>
-      <label class="opt"><input type="radio" name="where" value="Small team" /> Small team (2–20 people)</label>
-      <label class="opt"><input type="radio" name="where" value="Company" /> Company (20+ people)</label>
-    </fieldset>
+        <fieldset>
+          <legend>2. How do you use AI today?</legend>
+          <label class="opt"><input type="radio" name="usage" value="Barely" required /> Barely, or not yet</label>
+          <label class="opt"><input type="radio" name="usage" value="Chat" /> ChatGPT or Claude for one-off tasks</label>
+          <label class="opt"><input type="radio" name="usage" value="Some automations" /> A few automations or agents running</label>
+          <label class="opt"><input type="radio" name="usage" value="Core" /> AI is core to how we operate</label>
+        </fieldset>
 
-    <fieldset>
-      <legend>2. How do you use AI today?</legend>
-      <label class="opt"><input type="radio" name="usage" value="Barely" required /> Barely, or not yet</label>
-      <label class="opt"><input type="radio" name="usage" value="Chat" /> ChatGPT or Claude for one-off tasks</label>
-      <label class="opt"><input type="radio" name="usage" value="Some automations" /> A few automations or agents running</label>
-      <label class="opt"><input type="radio" name="usage" value="Core" /> AI is core to how we operate</label>
-    </fieldset>
+        <fieldset>
+          <legend>3. What's getting in the way?</legend>
+          <p class="hint">Pick up to three.</p>
+          <div id="pains"></div>
+        </fieldset>
 
-    <fieldset>
-      <legend>3. What's getting in the way?</legend>
-      <p class="hint">Pick up to three.</p>
-      <div id="pains"></div>
-    </fieldset>
+        <button id="next" type="submit">Show me →</button>
+        <p class="err" id="need" hidden>Answer all three questions first.</p>
+      </form>
 
-    <button id="next" type="button">See my rules of thumb →</button>
-    <p class="err" id="need" hidden>Answer all three questions first.</p>
-
-    <div id="step2" hidden>
-      <fieldset>
-        <legend>Your rules of thumb</legend>
-        <ul class="rules" id="rules"></ul>
-      </fieldset>
-      <fieldset>
-        <legend>Want to go deeper on a 30-minute call?</legend>
-        <p class="hint">Leave your details and pick a time. I read every one.</p>
-        <label>Name<input type="text" name="name" required autocomplete="name" /></label>
-        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
-        <label>Company or website (optional)<input type="text" name="company" autocomplete="organization" /></label>
-        <label>Anything else I should know? (optional)<textarea name="notes" rows="3"></textarea></label>
-        <button id="send" type="submit">Send and pick a time →</button>
-        <p class="err" id="err" hidden>That didn't go through. Try again, or <a href="https://x.com/heycamego">DM me on X</a>.</p>
-      </fieldset>
+      <div id="results" hidden></div>
     </div>
-  </form>
 
-  <section id="done" hidden>
-    <fieldset>
-      <legend>Got it, thanks.</legend>
-      <p class="hint">Last step: pick a 30-minute slot.</p>
-      <a class="btn" id="book" href="#">Book the call →</a>
-    </fieldset>
-  </section>
+    <aside id="call" hidden>
+      <h2>Want to talk this through on a call?</h2>
+      <p>Leave your email and I'll send you a link to grab 30 minutes with me. That's all I need.</p>
+      <form id="e">
+        <input type="hidden" name="access_key" value="WEB3FORMS_ACCESS_KEY" />
+        <input type="hidden" name="subject" value="heycamego assessment" />
+        <input type="checkbox" name="botcheck" hidden />
+        <label for="email" class="hint">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@company.com" />
+        <button id="send" type="submit">Let's talk →</button>
+        <p class="err" id="err" hidden>That didn't go through. Try again, or <a href="https://x.com/heycamego">DM me on X</a>.</p>
+      </form>
+      <p id="done" hidden><strong>Got it.</strong> Keep an eye on your inbox. I'll be in touch soon.</p>
+    </aside>
+  </div>
 
   <script>
-    var CAL_URL = 'CAL_COM_LINK';
+    var LABELS = { where: { 'Solo': 'a solo founder/operator', 'Small team': 'a small team (2-20 people)', 'Company': 'a company (20+ people)' },
+      usage: { 'Barely': 'barely use AI yet', 'Chat': 'use ChatGPT or Claude for one-off tasks', 'Some automations': 'have a few automations or agents running', 'Core': 'run AI at the core of how we operate' } };
     var PAINS = {
-      'Where to start': ["I don't know where to start",
-        'Take a task you repeat every week and ask three questions about each step: can I drop it, can a script do it, or does it need an agent? Most steps turn out to be scripts. Start where the work has a clear beginning and end, like a report or an audit.',
-        'Seen: finance and legal work is the easiest place to start, because the inputs and outputs are already defined.'],
-      'Nothing sticks': ['The team uses AI, but nothing sticks',
-        "A system people have to update by hand goes stale within a couple of weeks. Have the AI update it from email and meeting notes. Your team's only job is to check it.",
-        "Seen: a company's new operating system went stale the two weeks its builder was away."],
-      'Repetitive work': ['Repetitive work eats our week',
-        'Automate a whole line of work, not single tasks: inputs, steps and a pass/fail result. Run it for one customer or one week, confirm the result, then add the next. Your people move from typing numbers to checking them.',
-        'Seen: an AI audit of one quarterly statement found a shortfall larger than what had already been billed.'],
-      'Scattered systems': ['Our systems and data are scattered',
-        'Connect one real source, ask it a question, and compare the answer with the report you already trust. The differences, like time zones or cancelled orders, are rules you teach once. A good setup remembers them.',
-        "Seen: weekly sales from a live store API matched the team's spreadsheet, apart from two rules worth writing down."],
-      'Automations broke': ['We tried automations and they broke',
-        "Most automations that break can't log in. Check that the AI can reach the system on a schedule, without you. Then lock the output format, because people stop trusting a report the first time it changes shape.",
-        'Seen: a clinic turned an hour-long audit into eight minutes, then lost its users when the report kept changing format.'],
-      'Leads slip': ['Leads and follow-ups slip through',
-        "Write down what a deal that's ready to close looks like, and let the AI chase everyone who isn't there yet. It writes drafts and you approve them, from a business number instead of your personal WhatsApp.",
-        'Seen: owners answering buyers and suppliers from the same WhatsApp they use for family.'],
-      'Generic answers': ['AI gives us generic answers',
-        "AI stays generic until it can read your business: email, CRM, past conversations. Pull your 50 most common customer or supplier questions, and those become the rules for what it may answer. When it gets something wrong, correct it once.",
-        'Seen: teams with years of context spread across ChatGPT folders, Notion and their inbox.'],
-      'No measurement': ["We can't tell what's working",
-        'Pick one line of work and count the hours you get back each week. The gain usually comes from running several jobs in parallel, not from faster answers, so track what is running and what is done.',
-        'Seen: four-day tasks done in one by running six sessions side by side.']
+      'Where to start': {
+        label: "I don't know where to start",
+        title: 'Start with the boring stuff.',
+        body: "Pick something you do every single week. Write the steps down. Then go through them one by one and ask: do I need this at all, can a simple script do it, or does it really need an agent that thinks? Most steps vanish or turn into a few lines of code, and only a handful need the smart, expensive part, which is why the best first project is one with a clear start and a clear end, like a report, a reconciliation or an audit.",
+        seen: 'Finance and legal work usually goes first. The inputs and outputs are already defined.',
+        agent: "Help me find my first AI automation.\n1. Ask me to list the tasks I repeat every week and roughly how long each takes.\n2. For the top three by time, interview me until you can write each one as numbered steps, with inputs and outputs.\n3. Tag every step: DROP (doesn't need to exist), SCRIPT (fixed rules, no judgment) or AGENT (needs judgment or reads messy text).\n4. Recommend one task to automate first. Prefer one with a clear start and end, a measurable output and mostly SCRIPT steps.\n5. Give me a one-week plan to run it by hand next to the automation and compare the results.\nAsk one question at a time. Don't suggest tools until step 4."
+      },
+      'Nothing sticks': {
+        label: 'The team uses AI, but nothing sticks',
+        title: "If people have to update it, it'll go stale.",
+        body: "Every team has that tool. Everyone loved it for a week. Then people drifted back to email and WhatsApp, the dashboard slowly fell out of date, nobody trusted it, so nobody opened it, so it fell even further behind. Flip it around. Let the AI do the updating from your email and meeting notes. Your team just checks.",
+        seen: "A company's brand-new operating system went stale in the two weeks its builder was on vacation.",
+        agent: "Help me make our system update itself.\n1. Ask which tool is supposed to be our source of truth (Notion, CRM, spreadsheet) and which fields go stale fastest.\n2. Ask where the real updates happen today: email, WhatsApp, meetings, calls.\n3. For each stale field, write a rule: source -> what to extract -> which field to update. Example: a meeting transcript mentions a new deadline -> update Due date.\n4. Mark which updates you can write directly and which should be suggested for a person to approve.\n5. Draft a 5-minute weekly review: a short list of what changed, for one person to skim.\nThe goal is close to zero manual updating by the team."
+      },
+      'Repetitive work': {
+        label: 'Repetitive work eats our week',
+        title: 'Automate the whole line, one customer at a time.',
+        body: "Automating one task saves you minutes. Automating a whole line of work, with clear inputs, fixed steps and a pass or fail at the end, gives you back days. Start tiny. Run it for one customer or one week and check every number. When it holds, add the next one, and then the next, until the thing that used to eat your Thursdays just runs on its own and your people go from typing numbers to checking them, which is a much better job anyway.",
+        seen: 'An AI audit of one quarterly statement found a shortfall bigger than what had already been billed.',
+        agent: "Help me turn one repetitive process into a pipeline.\n1. Ask me for the process and one real example of its inputs and its final output.\n2. Write it as four stages: PREP (gather and clean inputs), CALCULATE (fixed rules, ideally a script), REVIEW (a separate check of the result), OUTPUT (pass or fail, with the reason).\n3. Ask me what tolerance counts as a pass. Push me to make it tight.\n4. Plan a dry run on one case where I already know the right answer.\n5. Only after it matches, list the next cases to add, one at a time.\nNever skip REVIEW. Never mark a pass without showing the numbers."
+      },
+      'Scattered systems': {
+        label: 'Our systems and data are scattered',
+        title: 'Connect one thing. Then check it.',
+        body: "You don't need everything connected on day one. Pick the source you'd check first every morning, your store, your CRM, your inbox, and plug it in. Ask it a question you already know the answer to. It'll be close but not exact, and those little gaps, a time zone here, a cancelled order there, are gold, because each one is a rule you teach once and never have to explain again.",
+        seen: "Weekly sales from a live store API landed right next to the team's spreadsheet. The gap was UTC dates and cancelled orders.",
+        agent: "Help me connect my first data source and trust it.\n1. Ask which systems I use and which one I'd check first every morning. Start there.\n2. Help me connect it (API, export or integration) and confirm you can read real data.\n3. Ask me for a number I already know, like last week's sales, and calculate it yourself.\n4. If we don't match, find out why: time zones, cancelled or pending items, refunds, date cutoffs.\n5. Write each cause down as a permanent rule, like: always report in my local time zone, exclude cancelled orders.\nSave the rules somewhere you'll read every time."
+      },
+      'Automations broke': {
+        label: 'We tried automations and they broke',
+        title: "It probably can't log in.",
+        body: "Most automations don't die from a lack of intelligence. They die at 8 a.m. on a Tuesday with nobody around, because a login expired, or a page took two extra seconds to load, or the system never had an API for the one thing you needed. Fix access first. Then lock the format of what it hands back. People forgive a slow report. They stop trusting one the first time it shows up looking different.",
+        seen: 'A clinic cut an hour-long audit to eight minutes, then lost its users when the report kept changing shape.',
+        agent: "Help me fix an automation that keeps breaking.\n1. Ask what it's supposed to do, when it runs and what happened the last time it failed.\n2. Check access first: can it log in on a schedule with nobody at the keyboard? Is there an API for this data, or only a website?\n3. Check timing: does it wait for pages to load, retry on failure and verify each step actually worked?\n4. Define a fixed output template: same sections, same order, same fields, every time. Show me the template before changing anything else.\n5. If the job is big, split it into smaller steps that feed one final report.\nTell me which of these is the real cause before proposing a fix."
+      },
+      'Leads slip': {
+        label: 'Leads and follow-ups slip through',
+        title: "Write down what 'ready to close' looks like.",
+        body: "Everyone has a pile of I'll-follow-up-tomorrow. Give your AI a clear picture of a deal that's ready to close, and it can chase everyone who isn't there yet. Let it write the drafts. You approve them. And please move the business off your personal WhatsApp, because nothing kills follow-up faster than a supplier question buried between your mom's voice note and the family group chat.",
+        seen: 'Owners answering buyers and suppliers from the same WhatsApp they use for family.',
+        agent: "Help me stop losing leads.\n1. Ask me about my last three deals that closed. From them, write a 'ready to close' checklist.\n2. Ask where my leads live today and list my pipeline stages, or propose simple ones: new, talking, proposal, won, lost.\n3. For each stage, define the next action and how many days until a follow-up is due.\n4. Every morning, list overdue leads and draft a short follow-up for each. Don't send anything. I approve every message.\n5. Suggest moving business conversations to a dedicated number or inbox.\nKeep drafts short and in my voice. Ask me for two examples of my real messages first."
+      },
+      'Generic answers': {
+        label: 'AI gives us generic answers',
+        title: "It can't know what you haven't shown it.",
+        body: "Generic in, generic out. If your AI has never seen your inbox, your customers or your past conversations, of course it sounds like a brochure. Give it read access. Pull the fifty questions customers and suppliers ask you most, and turn your real answers into its rulebook. And when it gets something wrong, correct it once, clearly, and make sure it remembers, so every correction makes it a little more yours and a little less everyone else's.",
+        seen: 'Teams with years of business context scattered across ChatGPT folders, Notion and their inbox.',
+        agent: "Help me give you real context about my business.\n1. Interview me about the business: what we sell, to whom, how we price, what a great customer looks like. One question at a time.\n2. Ask me to paste or export recent conversations with customers or suppliers.\n3. Find the most common questions and write my real answers as rules: when asked X, answer Y; never promise Z.\n4. If you're unsure about something, ask me instead of guessing.\n5. Save everything as one 'business context' document I can reuse with any AI tool.\nUse my actual words wherever you can."
+      },
+      'No measurement': {
+        label: "We can't tell what's working",
+        title: 'Count hours, not prompts.',
+        body: "Pick one line of work. Count the hours it takes this week. Count again next week with the AI doing its part. The big jump usually comes from running five or six things at once rather than from faster answers, and that feels amazing right up until you forget what you left running, so keep a simple board of what's working, what's waiting on you and what's done.",
+        seen: 'Four-day tasks done in one, by running six sessions side by side.',
+        agent: "Help me measure whether AI is actually saving us time.\n1. Ask me to pick one process and estimate the hours it takes per week today.\n2. Set up a simple weekly log: hours spent by people, items handled, errors found.\n3. Every week, compare against the baseline and tell me the hours given back.\n4. Keep a running list of what's in progress, what's waiting on me and what's done.\n5. If the number isn't improving after three weeks, tell me why and what to change.\nKeep it to one number I can say out loud."
+      }
     };
-    var f = document.getElementById('f'), box = document.getElementById('pains');
+
+    var f = document.getElementById('f'), box = document.getElementById('pains'), results = document.getElementById('results');
+    function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
     Object.keys(PAINS).forEach(function (k) {
-      box.insertAdjacentHTML('beforeend', '<label class="opt"><input type="checkbox" name="pains" value="' + k + '" /> ' + PAINS[k][0] + '</label>');
+      box.insertAdjacentHTML('beforeend', '<label class="opt"><input type="checkbox" name="pains" value="' + k + '" /> ' + esc(PAINS[k].label) + '</label>');
     });
     box.addEventListener('change', function () {
-      var checked = box.querySelectorAll(':checked').length;
-      box.querySelectorAll('input').forEach(function (i) { i.disabled = !i.checked && checked >= 3; });
+      var n = box.querySelectorAll(':checked').length;
+      box.querySelectorAll('input').forEach(function (i) { i.disabled = !i.checked && n >= 3; });
     });
-
-    document.getElementById('next').onclick = function () {
-      var picked = [].map.call(box.querySelectorAll(':checked'), function (i) { return i.value; });
-      if (!f.where.value || !f.usage.value || !picked.length) { document.getElementById('need').hidden = false; return; }
-      document.getElementById('rules').innerHTML = picked.map(function (k) { return '<li>' + PAINS[k][1] + '<small>' + PAINS[k][2] + '</small></li>'; }).join('');
-      document.getElementById('step2').hidden = false;
-      document.getElementById('need').hidden = true;
-      this.hidden = true;
-      document.getElementById('step2').scrollIntoView({ behavior: 'smooth' });
-    };
+    function picked() { return [].map.call(box.querySelectorAll(':checked'), function (i) { return i.value; }); }
 
     f.onsubmit = function (e) {
       e.preventDefault();
-      var btn = document.getElementById('send'), err = document.getElementById('err');
-      var data = new FormData(f);
-      data.set('pains', data.getAll('pains').join(', '));
+      var keys = picked();
+      if (!f.where.value || !f.usage.value || !keys.length) { document.getElementById('need').hidden = false; return; }
+      var context = "Context: I took the AI assessment on heycamego.com. I'm " + LABELS.where[f.where.value] + ' and we ' + LABELS.usage[f.usage.value] + '.';
+      results.innerHTML = keys.map(function (k) {
+        var p = PAINS[k], prompt = context + '\nThe problem: ' + p.label.toLowerCase() + '.\nThe idea: ' + p.title + ' ' + p.body + '\n\n' + p.agent;
+        return '<section class="result"><p class="said">You said: ' + esc(p.label.toLowerCase()) + '</p><h2>' + esc(p.title) + '</h2>' +
+          '<p class="body">' + esc(p.body) + '</p><p class="seen">Seen: ' + esc(p.seen) + '</p>' +
+          '<details><summary>See instructions for your agent</summary><div class="agent"><div class="agent-bar"><span>Paste this into ChatGPT, Claude or your agent</span>' +
+          '<button type="button" class="ghost copy">Copy</button></div><pre>' + esc(prompt) + '</pre></div></details></section>';
+      }).join('');
+      f.hidden = true; document.querySelector('.lede').hidden = true;
+      results.hidden = false; document.getElementById('call').hidden = false;
+      document.getElementById('wrap').classList.add('split');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    results.addEventListener('click', function (e) {
+      if (!e.target.classList.contains('copy')) return;
+      var btn = e.target, pre = btn.closest('.agent').querySelector('pre');
+      function selectIt() { var r = document.createRange(); r.selectNodeContents(pre); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected, press Ctrl/Cmd+C'; }
+      if (!navigator.clipboard) return selectIt();
+      navigator.clipboard.writeText(pre.textContent).then(function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1800); }, selectIt);
+    });
+
+    var ef = document.getElementById('e');
+    ef.onsubmit = function (e) {
+      e.preventDefault();
+      var btn = document.getElementById('send'), err = document.getElementById('err'), data = new FormData(ef);
+      data.set('where', f.where.value); data.set('usage', f.usage.value); data.set('pains', picked().join(', '));
       btn.disabled = true; err.hidden = true;
       fetch('https://api.web3forms.com/submit', { method: 'POST', body: data, headers: { Accept: 'application/json' } })
         .then(function (r) { return r.json(); })
-        .then(function (j) {
-          if (!j.success) throw j;
-          var q = new URLSearchParams({ name: data.get('name'), email: data.get('email'), notes: 'Pains: ' + data.get('pains') });
-          document.getElementById('book').href = CAL_URL + '?' + q;
-          f.hidden = true;
-          document.getElementById('done').hidden = false;
-        })
+        .then(function (j) { if (!j.success) throw j; ef.hidden = true; document.getElementById('done').hidden = false; })
         .catch(function () { err.hidden = false; btn.disabled = false; });
     };
   </script>

@@ -19,6 +19,7 @@
     @media (max-width: 720px) { main { grid-template-columns: 1fr; gap: 36px; } }
     ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; align-content: start; }
     li { color: var(--soft); }
+    .label { font: 700 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--soft); margin: 0 0 20px; }
     a { color: var(--ink); text-decoration: none; font-weight: 700; }
     a:hover, a:focus-visible { text-decoration: underline; }
     section { font: 19px/1.55 var(--serif); max-width: 34em; min-width: 0; }
@@ -36,13 +37,15 @@
   </header>
 
   <main>
+    <div>
+    <h2 class="label">What I'm building</h2>
     <ul>
-      <li><a href="/assessment/">Free AI assessment</a><br />Three questions, rules of thumb you can use today, then a 30-minute call if it helps.</li>
       <li><a href="https://tryolympus.ai">TryOlympus.ai</a><br />A shared workspace between humans and agents for automated companies.</li>
       <li><a href="https://coba.ai">coba.ai</a><br />Banking for AI-native organizations.</li>
       <li><a href="https://opensop.ai">opensop.ai</a><br />Process as infrastructure for agentic workflows.</li>
       <li>Wanna chat? <a href="https://x.com/heycamego">Send me a DM on X.</a></li>
     </ul>
+    </div>
 
     <section>
       <p>I believe we are living through a major transformation brought by AI. We now have digital intelligence on tap, and we’re still in the first minutes of understanding what this means. This is bigger than data centres, companies, or political views. The entire way society works will be changing.</p>
