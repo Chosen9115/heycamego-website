@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free AI assessment · heycamego</title>
+  <meta name="description" content="Three questions about how you use AI. Get rules of thumb right away, then a 30-minute call if you want one." />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" />
+  <style>
+    :root { --bg: #f6f4ee; --ink: #1d1b17; --soft: #7a756a; --line: #d9d4c8;
+      --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; --serif: "Newsreader", Georgia, serif; }
+    body { max-width: 640px; margin: 0 auto; padding: 56px 16px;
+      background: var(--bg); color: var(--ink); font: 13px/1.7 var(--mono); }
+    a { color: var(--ink); font-weight: 700; }
+    h1 { font: italic 28px/1.3 var(--serif); margin: 24px 0 8px; }
+    .lede { font: 19px/1.55 var(--serif); margin: 0 0 40px; }
+    fieldset { border: 0; border-top: 1px solid var(--line); margin: 0; padding: 20px 0 28px; }
+    legend { font-weight: 700; padding: 0; margin-bottom: 4px; }
+    .hint { color: var(--soft); margin: 0 0 12px; }
+    label.opt { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; cursor: pointer; }
+    input[type=radio], input[type=checkbox] { accent-color: var(--ink); }
+    input[type=text], input[type=email], textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px;
+      background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 4px; margin: 4px 0 14px; }
+    button, .btn { font: 700 13px var(--mono); background: var(--ink); color: var(--bg); border: 0; border-radius: 4px;
+      padding: 12px 18px; cursor: pointer; text-decoration: none; display: inline-block; }
+    button:disabled { opacity: .5; cursor: default; }
+    .rules { font: 18px/1.55 var(--serif); padding: 0; list-style: none; display: grid; gap: 14px; margin: 0 0 32px; }
+    .rules li { border-left: 2px solid var(--ink); padding-left: 14px; }
+    .rules small { display: block; margin-top: 6px; font: 12px/1.6 var(--mono); color: var(--soft); }
+    .err { color: #a3322a; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <a href="/">← heycamego</a>
+  <h1>Free AI assessment</h1>
+  <p class="lede">Answer three questions and get a few rules of thumb you can use today. If you want more, we book a 30-minute call. You walk me through your setup, and we go over quick fixes for what you flagged.</p>
+
+  <form id="f">
+    <input type="hidden" name="access_key" value="WEB3FORMS_ACCESS_KEY" />
+    <input type="hidden" name="subject" value="heycamego assessment" />
+    <input type="checkbox" name="botcheck" hidden />
+
+    <fieldset>
+      <legend>1. Where are you?</legend>
+      <label class="opt"><input type="radio" name="where" value="Solo" required /> Just me: founder, freelancer or operator</label>
+      <label class="opt"><input type="radio" name="where" value="Small team" /> Small team (2–20 people)</label>
+      <label class="opt"><input type="radio" name="where" value="Company" /> Company (20+ people)</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>2. How do you use AI today?</legend>
+      <label class="opt"><input type="radio" name="usage" value="Barely" required /> Barely, or not yet</label>
+      <label class="opt"><input type="radio" name="usage" value="Chat" /> ChatGPT or Claude for one-off tasks</label>
+      <label class="opt"><input type="radio" name="usage" value="Some automations" /> A few automations or agents running</label>
+      <label class="opt"><input type="radio" name="usage" value="Core" /> AI is core to how we operate</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>3. What's getting in the way?</legend>
+      <p class="hint">Pick up to three.</p>
+      <div id="pains"></div>
+    </fieldset>
+
+    <button id="next" type="button">See my rules of thumb →</button>
+    <p class="err" id="need" hidden>Answer all three questions first.</p>
+
+    <div id="step2" hidden>
+      <fieldset>
+        <legend>Your rules of thumb</legend>
+        <ul class="rules" id="rules"></ul>
+      </fieldset>
+      <fieldset>
+        <legend>Want to go deeper on a 30-minute call?</legend>
+        <p class="hint">Leave your details and pick a time. I read every one.</p>
+        <label>Name<input type="text" name="name" required autocomplete="name" /></label>
+        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+        <label>Company or website (optional)<input type="text" name="company" autocomplete="organization" /></label>
+        <label>Anything else I should know? (optional)<textarea name="notes" rows="3"></textarea></label>
+        <button id="send" type="submit">Send and pick a time →</button>
+        <p class="err" id="err" hidden>That didn't go through. Try again, or <a href="https://x.com/heycamego">DM me on X</a>.</p>
+      </fieldset>
+    </div>
+  </form>
+
+  <section id="done" hidden>
+    <fieldset>
+      <legend>Got it, thanks.</legend>
+      <p class="hint">Last step: pick a 30-minute slot.</p>
+      <a class="btn" id="book" href="#">Book the call →</a>
+    </fieldset>
+  </section>
+
+  <script>
+    var CAL_URL = 'CAL_COM_LINK';
+    var PAINS = {
+      'Where to start': ["I don't know where to start",
+        'Take a task you repeat every week and ask three questions about each step: can I drop it, can a script do it, or does it need an agent? Most steps turn out to be scripts. Start where the work has a clear beginning and end, like a report or an audit.',
+        'Seen: finance and legal work is the easiest place to start, because the inputs and outputs are already defined.'],
+      'Nothing sticks': ['The team uses AI, but nothing sticks',
+        "A system people have to update by hand goes stale within a couple of weeks. Have the AI update it from email and meeting notes. Your team's only job is to check it.",
+        "Seen: a company's new operating system went stale the two weeks its builder was away."],
+      'Repetitive work': ['Repetitive work eats our week',
+        'Automate a whole line of work, not single tasks: inputs, steps and a pass/fail result. Run it for one customer or one week, confirm the result, then add the next. Your people move from typing numbers to checking them.',
+        'Seen: an AI audit of one quarterly statement found a shortfall larger than what had already been billed.'],
+      'Scattered systems': ['Our systems and data are scattered',
+        'Connect one real source, ask it a question, and compare the answer with the report you already trust. The differences, like time zones or cancelled orders, are rules you teach once. A good setup remembers them.',
+        "Seen: weekly sales from a live store API matched the team's spreadsheet, apart from two rules worth writing down."],
+      'Automations broke': ['We tried automations and they broke',
+        "Most automations that break can't log in. Check that the AI can reach the system on a schedule, without you. Then lock the output format, because people stop trusting a report the first time it changes shape.",
+        'Seen: a clinic turned an hour-long audit into eight minutes, then lost its users when the report kept changing format.'],
+      'Leads slip': ['Leads and follow-ups slip through',
+        "Write down what a deal that's ready to close looks like, and let the AI chase everyone who isn't there yet. It writes drafts and you approve them, from a business number instead of your personal WhatsApp.",
+        'Seen: owners answering buyers and suppliers from the same WhatsApp they use for family.'],
+      'Generic answers': ['AI gives us generic answers',
+        "AI stays generic until it can read your business: email, CRM, past conversations. Pull your 50 most common customer or supplier questions, and those become the rules for what it may answer. When it gets something wrong, correct it once.",
+        'Seen: teams with years of context spread across ChatGPT folders, Notion and their inbox.'],
+      'No measurement': ["We can't tell what's working",
+        'Pick one line of work and count the hours you get back each week. The gain usually comes from running several jobs in parallel, not from faster answers, so track what is running and what is done.',
+        'Seen: four-day tasks done in one by running six sessions side by side.']
+    };
+    var f = document.getElementById('f'), box = document.getElementById('pains');
+    Object.keys(PAINS).forEach(function (k) {
+      box.insertAdjacentHTML('beforeend', '<label class="opt"><input type="checkbox" name="pains" value="' + k + '" /> ' + PAINS[k][0] + '</label>');
+    });
+    box.addEventListener('change', function () {
+      var checked = box.querySelectorAll(':checked').length;
+      box.querySelectorAll('input').forEach(function (i) { i.disabled = !i.checked && checked >= 3; });
+    });
+
+    document.getElementById('next').onclick = function () {
+      var picked = [].map.call(box.querySelectorAll(':checked'), function (i) { return i.value; });
+      if (!f.where.value || !f.usage.value || !picked.length) { document.getElementById('need').hidden = false; return; }
+      document.getElementById('rules').innerHTML = picked.map(function (k) { return '<li>' + PAINS[k][1] + '<small>' + PAINS[k][2] + '</small></li>'; }).join('');
+      document.getElementById('step2').hidden = false;
+      document.getElementById('need').hidden = true;
+      this.hidden = true;
+      document.getElementById('step2').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    f.onsubmit = function (e) {
+      e.preventDefault();
+      var btn = document.getElementById('send'), err = document.getElementById('err');
+      var data = new FormData(f);
+      data.set('pains', data.getAll('pains').join(', '));
+      btn.disabled = true; err.hidden = true;
+      fetch('https://api.web3forms.com/submit', { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (!j.success) throw j;
+          var q = new URLSearchParams({ name: data.get('name'), email: data.get('email'), notes: 'Pains: ' + data.get('pains') });
+          document.getElementById('book').href = CAL_URL + '?' + q;
+          f.hidden = true;
+          document.getElementById('done').hidden = false;
+        })
+        .catch(function () { err.hidden = false; btn.disabled = false; });
+    };
+  </script>
+</body>
+</html>
